@@ -151,6 +151,11 @@ YANDEX_API_KEY — "Api ключ к сервису Yandex geocoder API"
 ROLLBAR_TOKEN - "токен для системы логирования ROLLBAR" (зарегестрируйте аккаунт Rollbar и создайте токен)
 ROLLBAR_ENVIRONMENT - виртуальное окружения дял rollbar, например "development" или "production"
 DATABASE_URL - "postgres://Имя пользователя:пароль@Хост:Порт(если нет, то не указывать)/Имя БД" (Ссылка для подключения БД)
+POSTGRES_DB = 'starburger' # Имя базы данных
+POSTGRES_USER = 'postgres' # Имя пользователя базы данных
+POSTGRES_PASSWORD = 'password' # Пароль полшьзователя базы данных
+POSTGRES_HOST = "postgres_database" # !!! Имя сервиса из compose файла который держит базу данных
+POSTGRES_PORT = "5432" # Порт базы данных
 ```
 
 ## Автоматический деплой проекта на сервере после внесения изменений в репозиторий проекта
