@@ -19,6 +19,28 @@ services:
     # Запускаем команду сборки фронтенда в контейнере
     command: ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir /frontend/bundles --public-url="./"
   
+  
+  # Определяем имя сервиса backend-migrate
+  backend-migrate:
+    # Указываем имя образа которое будет иметь сервис
+    image: backend-migrate:latest
+    # Указываем docker compose, что образ нужно собрать локально перед запуском сервиса
+    build:
+      # Определяем путь к какталогу сборки
+      context: ./backend
+      # Указываем имя файла инструкций Docker (Dockerfile) внутри каталога context
+      dockerfile: Dockerfile
+      # Указываем целевой образ миграции
+      target: backend_migrate
+    # Определяем env файл для безопасного хранения настроек
+    env_file:
+      - ./backend/.env
+    # Определяем монтирование локальныйх директорий операционной системы внутрь файловой системы контейнера
+    volumes:
+      - ./backend:/backend:rw
+    # Говорим что не нужно перезапускать после миграций
+    restart: "no"
+  
   # Определяем имя сервиса backend
   backend:
     # Указываем Docker Compose, что образ нужно собрать локально перед запуском сервиса.
@@ -27,6 +49,8 @@ services:
       context: ./backend
       # Указываем имя файла инструкций Docker (Dockerfile) внутри каталога context.
       dockerfile: Dockerfile
+      # Указываем целевой образ бэкенда
+      target: backend
     # Определяем env файл для безопасного хранения настроек
     env_file:
       - ./backend/.env
@@ -43,6 +67,7 @@ services:
     # Устанавливаем зависимость запуска backend после frontend
     depends_on:
       - frontend
+      - backend-migrate
 
 
 
