@@ -4,6 +4,7 @@ node_modules/
 media/
 static/
 staticfiles/
+postgres_database
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

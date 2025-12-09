@@ -2,6 +2,28 @@
 name: starburger-docker
 # Перечень сервисов
 services:
+
+  # Определяем имя сервиса для базы данных
+  postgres_database:
+    # Определяем образ для запуска базы данных
+    image: postgres:16-alpine
+    # Задаем переменные окружения для создания базы данных из env файла
+    env_file:
+      - backend/.env
+    # Создаем том для хранения базы данных postgres
+    volumes:
+      - ./postgres_database:/var/lib/postgresql/data
+    # Пробрасываем сетевой порт из контейнера на компьютер.
+    ports:
+      - "127.0.0.1:5432:5432"
+    # Проверка подключения к БД
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h localhost -p 5432"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
   # Определяем имя,которое будет присвоено образу frontendа
   frontend:
     # Указываем имя образа которое будет иметь сервис
@@ -38,6 +60,9 @@ services:
     # Определяем монтирование локальныйх директорий операционной системы внутрь файловой системы контейнера
     volumes:
       - ./backend:/backend:rw
+    # Устанавливаем зависимость от контейнера базы данных
+    depends_on:
+      - postgres_database
     # Говорим что не нужно перезапускать после миграций
     restart: "no"
   
@@ -66,8 +91,11 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     # Устанавливаем зависимость запуска backend после frontend
     depends_on:
+      - postgres_database
       - frontend
       - backend-migrate
+volumes:
+  postgres_database:
 
 
 
