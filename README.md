@@ -73,7 +73,7 @@ POSTGRES_PORT = "5432" # Порт базы данных
 Перейти в репозиторий проекта и запустить команду запуска проекта в prod режиме
 
 ```sh
-docker compose -f docker-compose-deploy.yml up -d
+docker compose -f docker-compose-prod.yml up -d
 ```
 
 ## Автоматический деплой проекта на сервере после внесения изменений в репозиторий проекта
