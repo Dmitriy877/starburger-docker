@@ -39,7 +39,7 @@ services:
       - ./frontend/bundles-src:/frontend/bundles-src
       - ./frontend/bundles:/frontend/bundles
     # Запускаем команду сборки фронтенда в контейнере
-    command: ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir /frontend/bundles --public-url="./"
+    command: ./node_modules/.bin/parcel bundles-src/index.js --dist-dir /frontend/bundles --public-url="./"
   
   # Указываем имя образа которое будет иметь сервис
   backend-collectstatic:
