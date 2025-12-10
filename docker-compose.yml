@@ -41,6 +41,30 @@ services:
     # Запускаем команду сборки фронтенда в контейнере
     command: ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir /frontend/bundles --public-url="./"
   
+  # Указываем имя образа которое будет иметь сервис
+  backend-collectstatic:
+    # Указываем имя образа которе будет иметь сервис
+    image: backend-collectstatic:latest
+    # Указываем Docker Compose, что образ нужно собрать локально перед запуском сервиса.
+    build:
+      # Определяеv путь к каталогу сборки
+      context: ./backend
+      # Указываем имя файла инструкций Docker (Dockerfile) внутри каталога context.
+      dockerfile: Dockerfile
+      # Указываем целевой образ миграции
+      target: backend_collectstatic
+    # Определяем env файл для безопасного хранения настроек
+    env_file:
+      - ./backend/.env
+    # Определяем монтирование локальныйх директорий операционной системы внутрь файловой системы контейнера
+    volumes:
+      - ./frontend/bundles:/frontend/bundles
+      - ./frontend/assets:/frontend/assets
+      - ./staticfiles:/backend/staticfiles
+    # Запускаем сборку статики
+    command: sh -lc "python manage.py collectstatic --noinput"
+    # Говорим что не нужно перезапускать сервис
+    restart: "no"
   
   # Определяем имя сервиса backend-migrate
   backend-migrate:
@@ -90,7 +114,7 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     # Запускаем backend внутри контейнера на порту 0.0.0.0:8000
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn -w 3 -b 0.0.0.0:8000 star_burger.wsgi:application
     # Устанавливаем зависимость запуска backend после frontend
     depends_on:
       - postgres_database
