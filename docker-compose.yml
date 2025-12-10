@@ -109,7 +109,7 @@ services:
     volumes:
       - ./backend:/backend:rw
       - ./frontend:/frontend:rw
-      - ./media:/media:rw
+      - ./backend/media:/media:rw
     # Пробрасываем сетевой порт из контейнера на компьютер.
     ports:
       - "127.0.0.1:8000:8000"
