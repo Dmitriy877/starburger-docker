@@ -29,6 +29,7 @@ POSTGRES_USER = 'postgres' # Имя пользователя базы данны
 POSTGRES_PASSWORD = 'password' # Пароль полшьзователя базы данных
 POSTGRES_HOST = "postgres_database" # !!! Имя сервиса из compose файла который держит базу данных
 POSTGRES_PORT = "5432" # Порт базы данных
+CSRF_TRUSTED_ORIGINS=https://www.example.ru,https://example.ru # Добавить домены на которых будет висеть сайт для избегания ошибки при авторизации на деплое
 ```
 
 Установить [Docker](https://docs.docker.com/engine/install/)

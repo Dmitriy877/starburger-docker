@@ -18,6 +18,7 @@ DEBUG = env.bool('DEBUG')
 YANDEX_API_KEY = env('YANDEX_API_KEY')
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 
 ROLLBAR = {
     'access_token': env('ROLLBAR_TOKEN'),
