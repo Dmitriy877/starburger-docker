@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Копируем файл с зависимостями
 COPY requirements.txt ./requirements.txt
 # Устанавливаем зависимости проекта
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 # Копируем директорию проекта
 COPY . .
 
